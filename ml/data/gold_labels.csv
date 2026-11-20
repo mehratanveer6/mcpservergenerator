@@ -1,0 +1,184 @@
+row_id,provider,method,path,operation_id,summary,gold_label
+6311,squareup.com,POST,/v2/payments/cancel,CancelPaymentByIdempotencyKey,CancelPaymentByIdempotencyKey,destructive
+5369,plaid.com,POST,/processor/balance/get,processorBalanceGet,Retrieve Balance data,read
+6338,squareup.com,POST,/v2/terminals/checkouts,CreateTerminalCheckout,CreateTerminalCheckout,write
+6445,stripe.com,POST,/v1/customers/{customer}/balance_transactions/{transaction},PostCustomersCustomerBalanceTransactionsTransaction,,write
+1017,asana.com,POST,/workspaces/{workspace_gid}/tags,createTagForWorkspace,Create a tag in a workspace,write
+5360,plaid.com,POST,/payment_initiation/payment/token/create,createPaymentToken,Create payment token,write
+5295,plaid.com,POST,/credit/bank_income/refresh,creditBankIncomeRefresh,Refresh a user's bank income information,write
+6333,squareup.com,POST,/v2/team-members/search,SearchTeamMembers,SearchTeamMembers,read
+5395,plaid.com,POST,/signal/decision/report,signalDecisionReport,Report whether you initiated an ACH transaction,write
+6690,stripe.com,POST,/v1/tax/calculations,PostTaxCalculations,,write
+5315,plaid.com,POST,/identity/get,identityGet,Retrieve identity data,read
+5049,mux.com,POST,/video/v1/spaces/{SPACE_ID}/broadcasts/{BROADCAST_ID}/stop,stop-space-broadcast,Stop a space broadcast,destructive
+6716,stripe.com,POST,/v1/terminal/readers/{reader},PostTerminalReadersReader,,write
+6331,squareup.com,POST,/v2/team-members/bulk-create,BulkCreateTeamMembers,BulkCreateTeamMembers,write
+5957,slack.com,POST,/users.profile.set,users_profile_set,,write
+6376,stripe.com,POST,/v1/accounts/{account}/reject,PostAccountsAccountReject,,destructive
+5371,plaid.com,POST,/processor/identity/get,processorIdentityGet,Retrieve Identity data,read
+6323,squareup.com,POST,/v2/subscriptions,CreateSubscription,CreateSubscription,write
+5428,plaid.com,POST,/transfer/repayment/list,transferRepaymentList,Lists historical repayments,read
+881,asana.com,POST,/goals/{goal_gid}/removeSupportingRelationship,removeSupportingRelationship,Removes a supporting goal relationship,destructive
+6283,squareup.com,POST,/v2/locations/{location_id}/transactions/{transaction_id}/capture,CaptureTransaction,CaptureTransaction,write
+6241,squareup.com,POST,/v2/inventory/batch-retrieve-counts,DeprecatedBatchRetrieveInventoryCounts,DeprecatedBatchRetrieveInventoryCounts,read
+6756,stripe.com,POST,/v1/transfers/{id}/reversals,PostTransfersIdReversals,,destructive
+6613,stripe.com,POST,/v1/promotion_codes/{promotion_code},PostPromotionCodesPromotionCode,,write
+6105,spotify.com,POST,/me/player/previous,skip-users-playback-to-previous-track,Skip To Previous,write
+890,asana.com,POST,/portfolios,createPortfolio,Create a portfolio,write
+5450,plaid.com,POST,/watchlist_screening/individual/get,watchlistScreeningIndividualGet,Retrieve an individual watchlist screening,read
+5843,slack.com,POST,/admin.users.remove,admin_users_remove,,destructive
+5309,plaid.com,POST,/deposit_switch/create,depositSwitchCreate,Create a deposit switch,write
+5445,plaid.com,POST,/watchlist_screening/entity/program/list,watchlistScreeningEntityProgramList,List entity watchlist screening programs,read
+5868,slack.com,POST,/chat.delete,chat_delete,,destructive
+5355,plaid.com,POST,/payment_initiation/consent/revoke,paymentInitiationConsentRevoke,Revoke payment consent,destructive
+5320,plaid.com,POST,/identity_verification/retry,identityVerificationRetry,Retry an Identity Verification,write
+5814,slack.com,POST,/admin.conversations.setTeams,admin_conversations_setTeams,,write
+6186,squareup.com,POST,/v2/catalog/batch-delete,BatchDeleteCatalogObjects,BatchDeleteCatalogObjects,destructive
+6699,stripe.com,POST,/v1/tax_rates,PostTaxRates,,write
+5867,slack.com,POST,/calls.update,calls_update,,write
+5813,slack.com,POST,/admin.conversations.setConversationPrefs,admin_conversations_setConversationPrefs,,write
+5282,plaid.com,POST,/bank_transfer/sweep/list,bankTransferSweepList,List sweeps,read
+6496,stripe.com,POST,/v1/file_links/{link},PostFileLinksLink,,write
+5878,slack.com,POST,/conversations.archive,conversations_archive,,destructive
+5305,plaid.com,POST,/credit/sessions/get,creditSessionsGet,Retrieve Link sessions for your user,read
+1010,asana.com,POST,/workspaces/{workspace_gid}/addUser,addUserForWorkspace,Add a user to a workspace or organization,write
+5294,plaid.com,POST,/credit/bank_income/pdf/get,creditBankIncomePdfGet,Retrieve information from the bank accounts used for income verification in PDF format,read
+5426,plaid.com,POST,/transfer/refund/create,transferRefundCreate,Create a refund,destructive
+6406,stripe.com,POST,/v1/charges/{charge},PostChargesCharge,,write
+5934,slack.com,POST,/stars.add,stars_add,,write
+5276,plaid.com,POST,/bank_transfer/event/list,bankTransferEventList,List bank transfer events,read
+6591,stripe.com,POST,/v1/payouts/{payout},PostPayoutsPayout,,write
+6343,squareup.com,POST,/v2/terminals/refunds/search,SearchTerminalRefunds,SearchTerminalRefunds,read
+6686,stripe.com,POST,/v1/subscriptions/{subscription_exposed_id},PostSubscriptionsSubscriptionExposedId,,write
+6341,squareup.com,POST,/v2/terminals/checkouts/{checkout_id}/cancel,CancelTerminalCheckout,CancelTerminalCheckout,destructive
+5307,plaid.com,POST,/dashboard_user/list,dashboardUserList,List dashboard users,read
+6289,squareup.com,POST,/v2/loyalty/accounts/{account_id}/accumulate,AccumulateLoyaltyPoints,AccumulateLoyaltyPoints,write
+6451,stripe.com,POST,/v1/customers/{customer}/bank_accounts/{id}/verify,PostCustomersCustomerBankAccountsIdVerify,,write
+5448,plaid.com,POST,/watchlist_screening/entity/update,watchlistScreeningEntityUpdate,Update an entity screening,write
+5835,slack.com,POST,/admin.teams.settings.setName,admin_teams_settings_setName,,write
+6768,stripe.com,POST,/v1/treasury/financial_accounts,PostTreasuryFinancialAccounts,,write
+5266,plaid.com,POST,/asset_report/create,assetReportCreate,Create an Asset Report,write
+6743,stripe.com,POST,/v1/test_helpers/treasury/outbound_transfers/{outbound_transfer}/return,PostTestHelpersTreasuryOutboundTransfersOutboundTransferReturn,,destructive
+6411,stripe.com,POST,/v1/charges/{charge}/refund,PostChargesChargeRefund,,destructive
+5915,slack.com,POST,/files.upload,files_upload,,write
+6389,stripe.com,POST,/v1/apps/secrets,PostAppsSecrets,,write
+5406,plaid.com,POST,/transfer/capabilities/get,transferCapabilitiesGet,Get RTP eligibility information of a transfer,read
+5837,slack.com,POST,/admin.usergroups.addTeams,admin_usergroups_addTeams,,write
+6672,stripe.com,POST,/v1/subscription_items/{item},PostSubscriptionItemsItem,,write
+5841,slack.com,POST,/admin.users.invite,admin_users_invite,,write
+6571,stripe.com,POST,/v1/payment_intents/{intent}/apply_customer_balance,PostPaymentIntentsIntentApplyCustomerBalance,,write
+5415,plaid.com,POST,/transfer/metrics/get,transferMetricsGet,Get transfer product usage metrics,read
+6593,stripe.com,POST,/v1/payouts/{payout}/reverse,PostPayoutsPayoutReverse,,destructive
+5011,mux.com,POST,/video/v1/assets/{ASSET_ID}/tracks,create-asset-track,Create an asset track,write
+6701,stripe.com,POST,/v1/tax_rates/{tax_rate},PostTaxRatesTaxRate,,write
+5402,plaid.com,POST,/transactions/refresh,transactionsRefresh,Refresh transaction data,write
+6458,stripe.com,POST,/v1/customers/{customer}/cash_balance,PostCustomersCustomerCashBalance,,write
+5807,slack.com,POST,/admin.conversations.invite,admin_conversations_invite,,write
+6737,stripe.com,POST,/v1/test_helpers/treasury/inbound_transfers/{id}/succeed,PostTestHelpersTreasuryInboundTransfersIdSucceed,,write
+5944,slack.com,POST,/usergroups.enable,usergroups_enable,,write
+6266,squareup.com,POST,/v2/labor/shifts/search,SearchShifts,SearchShifts,read
+5409,plaid.com,POST,/transfer/event/list,transferEventList,List transfer events,read
+6294,squareup.com,POST,/v2/loyalty/programs/{program_id}/calculate,CalculateLoyaltyPoints,CalculateLoyaltyPoints,read
+5038,mux.com,POST,/video/v1/signing-keys,create-url-signing-key,Create a URL signing key,write
+6463,stripe.com,POST,/v1/customers/{customer}/funding_instructions,PostCustomersCustomerFundingInstructions,,write
+6709,stripe.com,POST,/v1/terminal/locations,PostTerminalLocations,,write
+6486,stripe.com,POST,/v1/disputes/{dispute}/close,PostDisputesDisputeClose,,destructive
+5440,plaid.com,POST,/watchlist_screening/entity/get,watchlistScreeningEntityGet,Get an entity screening,read
+6621,stripe.com,POST,/v1/quotes/{quote}/finalize,PostQuotesQuoteFinalize,,write
+6639,stripe.com,POST,/v1/refunds/{refund}/cancel,PostRefundsRefundCancel,,destructive
+6554,stripe.com,POST,/v1/issuing/settlements/{settlement},PostIssuingSettlementsSettlement,,write
+5399,plaid.com,POST,/transactions/enrich,transactionsEnrich,Enrich locally-held transaction data,read
+6727,stripe.com,POST,/v1/test_helpers/issuing/cards/{card}/shipping/ship,PostTestHelpersIssuingCardsCardShippingShip,,write
+5053,mux.com,PUT,/video/v1/transcription-vocabularies/{TRANSCRIPTION_VOCABULARY_ID},update-transcription-vocabulary,Update a Transcription Vocabulary,write
+6111,spotify.com,PUT,/me/player/shuffle,toggle-shuffle-for-users-playback,Toggle Playback Shuffle,write
+6213,squareup.com,PUT,/v2/customers/{customer_id}/groups/{group_id},AddGroupToCustomer,AddGroupToCustomer,write
+1009,asana.com,PUT,/workspaces/{workspace_gid},updateWorkspace,Update a workspace,write
+6130,spotify.com,PUT,/playlists/{playlist_id}/images,upload-custom-playlist-cover,Add Custom Playlist Cover Image,write
+1004,asana.com,PUT,/webhooks/{webhook_gid},updateWebhook,Update a webhook,write
+871,asana.com,PUT,/goal_relationships/{goal_relationship_gid},updateGoalRelationship,Update a goal relationship,write
+6112,spotify.com,PUT,/me/player/volume,set-volume-for-users-playback,Set Playback Volume,write
+6103,spotify.com,PUT,/me/player/pause,pause-a-users-playback,Pause Playback,write
+6115,spotify.com,PUT,/me/shows,save-shows-user,Save Shows for Current User,write
+6007,spotify.com,PUT,/me/following,follow-artists-users,Follow Artists or Users,write
+6083,spotify.com,PUT,/me/albums,save-albums-user,Save Albums for Current User,write
+5007,mux.com,PUT,/video/v1/assets/{ASSET_ID}/mp4-support,update-asset-mp4-support,Update MP4 support,write
+5023,mux.com,PUT,/video/v1/live-streams/{LIVE_STREAM_ID}/generated-subtitles,update-live-stream-generated-subtitles,Update a live stream's generated subtitles,write
+6277,squareup.com,PUT,/v2/locations/{location_id},UpdateLocation,UpdateLocation,write
+5004,mux.com,PATCH,/video/v1/assets/{ASSET_ID},update-asset,Update an Asset,write
+5018,mux.com,PATCH,/video/v1/live-streams/{LIVE_STREAM_ID},update-live-stream,Update a live stream,write
+6661,stripe.com,GET,/v1/sigma/scheduled_query_runs/{scheduled_query_run},GetSigmaScheduledQueryRunsScheduledQueryRun,,read
+6150,squareup.com,GET,/v1/me/employees,ListEmployees,ListEmployees,read
+6489,stripe.com,GET,/v1/events,GetEvents,,read
+6524,stripe.com,GET,/v1/invoices/upcoming/lines,GetInvoicesUpcomingLines,,read
+5233,openai.com,GET,/files/{file_id}/content,downloadFile,Returns the contents of the specified file,read
+5945,slack.com,GET,/usergroups.list,usergroups_list,,read
+6795,stripe.com,GET,/v1/webhook_endpoints/{webhook_endpoint},GetWebhookEndpointsWebhookEndpoint,,read
+4987,mux.com,GET,/data/v1/monitoring/metrics/{MONITORING_METRIC_ID}/breakdown-timeseries,get-monitoring-breakdown-timeseries,Get Monitoring Breakdown Timeseries,read
+5985,spotify.com,GET,/browse/categories/{category_id}/playlists,get-a-categories-playlists,Get Category's Playlists,read
+1018,asana.com,GET,/workspaces/{workspace_gid}/tasks/search,searchTasksForWorkspace,Search tasks in a workspace,read
+4990,mux.com,GET,/data/v1/realtime/metrics,list-realtime-metrics,List Real-Time Metrics,read
+6404,stripe.com,GET,/v1/charges/search,GetChargesSearch,,read
+6436,stripe.com,GET,/v1/customers,GetCustomers,,read
+6604,stripe.com,GET,/v1/products,GetProducts,,read
+6520,stripe.com,GET,/v1/invoices,GetInvoices,,read
+5796,slack.com,GET,/admin.apps.requests.list,admin_apps_requests_list,,read
+6176,squareup.com,GET,/v2/bookings/{booking_id},RetrieveBooking,RetrieveBooking,read
+6704,stripe.com,GET,/v1/terminal/configurations/{configuration},GetTerminalConfigurationsConfiguration,,read
+6154,squareup.com,GET,/v1/me/roles,ListEmployeeRoles,ListEmployeeRoles,read
+6669,stripe.com,GET,/v1/subscription_items,GetSubscriptionItems,,read
+6616,stripe.com,GET,/v1/quotes/{quote},GetQuotesQuote,,read
+5016,mux.com,GET,/video/v1/live-streams/{LIVE_STREAM_ID},get-live-stream,Retrieve a live stream,read
+5229,openai.com,GET,/files,listFiles,Returns a list of files that belong to the user's organization.,read
+5991,spotify.com,GET,/episodes/{id},get-an-episode,Get Episode,read
+6648,stripe.com,GET,/v1/setup_attempts,GetSetupAttempts,,read
+6660,stripe.com,GET,/v1/sigma/scheduled_query_runs,GetSigmaScheduledQueryRuns,,read
+6219,squareup.com,GET,/v2/disputes/{dispute_id},RetrieveDispute,RetrieveDispute,read
+6161,squareup.com,GET,/v1/{location_id}/payments,ListPayments,ListPayments,read
+6397,stripe.com,GET,/v1/billing_portal/configurations,GetBillingPortalConfigurations,,read
+6556,stripe.com,GET,/v1/issuing/transactions/{transaction},GetIssuingTransactionsTransaction,,read
+5938,slack.com,GET,/team.billableInfo,team_billableInfo,,read
+6391,stripe.com,GET,/v1/apps/secrets/find,GetAppsSecretsFind,,read
+6773,stripe.com,GET,/v1/treasury/inbound_transfers,GetTreasuryInboundTransfers,,read
+4998,mux.com,GET,/system/v1/signing-keys/{SIGNING_KEY_ID},get-signing-key,Retrieve a signing key,read
+6786,stripe.com,GET,/v1/treasury/received_credits/{id},GetTreasuryReceivedCreditsId,,read
+6124,spotify.com,GET,/playlists/{playlist_id},get-playlist,Get Playlist,read
+6584,stripe.com,GET,/v1/payment_methods/{payment_method},GetPaymentMethodsPaymentMethod,,read
+6594,stripe.com,GET,/v1/plans,GetPlans,,read
+6026,spotify.com,GET,/me/shows,get-users-saved-shows,Get User's Saved Shows,read
+6569,stripe.com,GET,/v1/payment_intents/{intent},GetPaymentIntentsIntent,,read
+6470,stripe.com,DELETE,/v1/customers/{customer}/sources/{id},DeleteCustomersCustomerSourcesId,,destructive
+6122,spotify.com,DELETE,/me/tracks,remove-tracks-user,Remove User's Saved Tracks,destructive
+6298,squareup.com,DELETE,/v2/loyalty/rewards/{reward_id},DeleteLoyaltyReward,DeleteLoyaltyReward,destructive
+5035,mux.com,DELETE,/video/v1/playback-restrictions/{PLAYBACK_RESTRICTION_ID},delete-playback-restriction,Delete a Playback Restriction,destructive
+6008,spotify.com,DELETE,/me/following,unfollow-artists-users,Unfollow Artists or Users,destructive
+6352,stripe.com,DELETE,/v1/accounts/{account},DeleteAccountsAccount,,destructive
+6450,stripe.com,DELETE,/v1/customers/{customer}/bank_accounts/{id},DeleteCustomersCustomerBankAccountsId,,destructive
+1005,asana.com,DELETE,/webhooks/{webhook_gid},deleteWebhook,Delete a webhook,destructive
+5017,mux.com,DELETE,/video/v1/live-streams/{LIVE_STREAM_ID},delete-live-stream,Delete a live stream,destructive
+957,asana.com,DELETE,/tasks/{task_gid},deleteTask,Delete a task,destructive
+5010,mux.com,DELETE,/video/v1/assets/{ASSET_ID}/playback-ids/{PLAYBACK_ID},delete-asset-playback-id,Delete a playback ID,destructive
+6269,squareup.com,DELETE,/v2/labor/shifts/{id},DeleteShift,DeleteShift,destructive
+876,asana.com,DELETE,/goals/{goal_gid},deleteGoal,Delete a goal,destructive
+5026,mux.com,DELETE,/video/v1/live-streams/{LIVE_STREAM_ID}/playback-ids/{PLAYBACK_ID},delete-live-stream-playback-id,Delete a live stream playback ID,destructive
+4999,mux.com,DELETE,/system/v1/signing-keys/{SIGNING_KEY_ID},delete-signing-key,Delete a signing key,destructive
+6456,stripe.com,DELETE,/v1/customers/{customer}/cards/{id},DeleteCustomersCustomerCardsId,,destructive
+6441,stripe.com,DELETE,/v1/customers/{customer},DeleteCustomersCustomer,,destructive
+5044,mux.com,DELETE,/video/v1/spaces/{SPACE_ID},delete-space,Delete a space,destructive
+5996,spotify.com,DELETE,/me/albums,remove-albums-user,Remove Users' Saved Albums,destructive
+5244,openai.com,DELETE,/models/{model},deleteModel,Delete a fine-tuned model. You must have the Owner role in your organization.,destructive
+6193,squareup.com,DELETE,/v2/catalog/object/{object_id},DeleteCatalogObject,DeleteCatalogObject,destructive
+6380,stripe.com,DELETE,/v1/apple_pay/domains/{domain},DeleteApplePayDomainsDomain,,destructive
+6717,stripe.com,DELETE,/v1/terminal/readers/{reader},DeleteTerminalReadersReader,,destructive
+6629,stripe.com,DELETE,/v1/radar/value_list_items/{item},DeleteRadarValueListItemsItem,,destructive
+6210,squareup.com,DELETE,/v2/customers/{customer_id},DeleteCustomer,DeleteCustomer,destructive
+6262,squareup.com,DELETE,/v2/labor/break-types/{id},DeleteBreakType,DeleteBreakType,destructive
+5040,mux.com,DELETE,/video/v1/signing-keys/{SIGNING_KEY_ID},delete-url-signing-key,Delete a URL signing key,destructive
+6038,spotify.com,DELETE,/playlists/{playlist_id}/followers,unfollow-playlist,Unfollow Playlist,destructive
+6634,stripe.com,DELETE,/v1/radar/value_lists/{value_list},DeleteRadarValueListsValueList,,destructive
+6092,spotify.com,DELETE,/me/episodes,remove-episodes-user,Remove User's Saved Episodes,destructive
+6255,squareup.com,DELETE,/v2/invoices/{invoice_id},DeleteInvoice,DeleteInvoice,destructive
+6088,spotify.com,DELETE,/me/audiobooks,remove-audiobooks-user,Remove User's Saved Audiobooks,destructive
+951,asana.com,DELETE,/tags/{tag_gid},deleteTag,Delete a tag,destructive
+6797,stripe.com,DELETE,/v1/webhook_endpoints/{webhook_endpoint},DeleteWebhookEndpointsWebhookEndpoint,,destructive
+6488,stripe.com,DELETE,/v1/ephemeral_keys/{key},DeleteEphemeralKeysKey,,destructive
+6028,spotify.com,DELETE,/me/shows,remove-shows-user,Remove User's Saved Shows,destructive

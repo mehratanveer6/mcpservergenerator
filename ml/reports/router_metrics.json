@@ -1,0 +1,135 @@
+{
+  "retrieval": {
+    "github.com": {
+      "operations": 845,
+      "queries": 25,
+      "bm25_router": {
+        "recall@1": 0.24,
+        "recall@5": 0.6,
+        "recall@10": 0.68,
+        "mrr": 0.387
+      },
+      "tfidf_cosine": {
+        "recall@1": 0.2,
+        "recall@5": 0.48,
+        "recall@10": 0.6,
+        "mrr": 0.332
+      },
+      "tool_name_only": {
+        "recall@1": 0.24,
+        "recall@5": 0.36,
+        "recall@10": 0.6,
+        "mrr": 0.327
+      },
+      "random_recall@5": 0.0059
+    },
+    "slack.com": {
+      "operations": 174,
+      "queries": 20,
+      "bm25_router": {
+        "recall@1": 0.6,
+        "recall@5": 0.8,
+        "recall@10": 0.85,
+        "mrr": 0.705
+      },
+      "tfidf_cosine": {
+        "recall@1": 0.65,
+        "recall@5": 0.85,
+        "recall@10": 0.9,
+        "mrr": 0.749
+      },
+      "tool_name_only": {
+        "recall@1": 0.55,
+        "recall@5": 0.8,
+        "recall@10": 0.8,
+        "mrr": 0.652
+      },
+      "random_recall@5": 0.0287
+    },
+    "stripe.com": {
+      "operations": 452,
+      "queries": 20,
+      "bm25_router": {
+        "recall@1": 0.5,
+        "recall@5": 0.8,
+        "recall@10": 0.85,
+        "mrr": 0.647
+      },
+      "tfidf_cosine": {
+        "recall@1": 0.5,
+        "recall@5": 0.7,
+        "recall@10": 0.8,
+        "mrr": 0.59
+      },
+      "tool_name_only": {
+        "recall@1": 0.5,
+        "recall@5": 0.55,
+        "recall@10": 0.65,
+        "mrr": 0.542
+      },
+      "random_recall@5": 0.0111
+    },
+    "overall": {
+      "queries": 65,
+      "bm25_router": {
+        "recall@1": 0.431,
+        "recall@5": 0.723,
+        "recall@10": 0.785,
+        "mrr": 0.565
+      },
+      "tfidf_cosine": {
+        "recall@1": 0.431,
+        "recall@5": 0.662,
+        "recall@10": 0.754,
+        "mrr": 0.54
+      },
+      "tool_name_only": {
+        "recall@1": 0.415,
+        "recall@5": 0.554,
+        "recall@10": 0.677,
+        "mrr": 0.493
+      }
+    }
+  },
+  "context_cost": {
+    "Slack Web API": {
+      "all": {
+        "tools": 176,
+        "chars": 223902,
+        "approx_tokens": 55975
+      },
+      "curated": {
+        "tools": 27,
+        "chars": 31434,
+        "approx_tokens": 7858
+      },
+      "reduction": 0.86
+    },
+    "Stripe API": {
+      "all": {
+        "tools": 450,
+        "chars": 787245,
+        "approx_tokens": 196811
+      },
+      "curated": {
+        "tools": 27,
+        "chars": 61785,
+        "approx_tokens": 15446
+      },
+      "reduction": 0.922
+    },
+    "GitHub v3 REST API": {
+      "all": {
+        "tools": 813,
+        "chars": 1079726,
+        "approx_tokens": 269931
+      },
+      "curated": {
+        "tools": 27,
+        "chars": 37106,
+        "approx_tokens": 9276
+      },
+      "reduction": 0.966
+    }
+  }
+}

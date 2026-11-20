@@ -1,0 +1,206 @@
+[
+  {
+    "api": "GitHub v3 REST API",
+    "format": "openapi-3.0",
+    "operations": 811,
+    "mode": "curated",
+    "direct_tools": 25,
+    "risk_counts": {
+      "read": 433,
+      "write": 241,
+      "destructive": 137
+    },
+    "spec_health": 73,
+    "checks": [
+      "NO_SECURITY_SCHEMES",
+      "LONG_DESCRIPTION",
+      "TOO_MANY_TOOLS",
+      "TOOL_POISONING_SUSPECTED"
+    ],
+    "low_confidence": 0,
+    "drift_status": "ok",
+    "drift": {
+      "psi_method": 0.0726,
+      "psi_text_length": 0.5053,
+      "oov_rate": 0.0438,
+      "mean_confidence": 0.9989
+    },
+    "seconds": 13.4
+  },
+  {
+    "api": "Stripe API",
+    "format": "openapi-3.0",
+    "operations": 448,
+    "mode": "curated",
+    "direct_tools": 25,
+    "risk_counts": {
+      "read": 215,
+      "write": 178,
+      "destructive": 55
+    },
+    "spec_health": 87,
+    "checks": [
+      "MISSING_DESCRIPTION",
+      "UNDOCUMENTED_PARAMETERS",
+      "TOO_MANY_TOOLS"
+    ],
+    "low_confidence": 4,
+    "drift_status": "ok",
+    "drift": {
+      "psi_method": 1.2031,
+      "psi_text_length": 0.1966,
+      "oov_rate": 0.1917,
+      "mean_confidence": 0.9791
+    },
+    "seconds": 4.52
+  },
+  {
+    "api": "Slack Web API",
+    "format": "openapi-3.0",
+    "operations": 174,
+    "mode": "curated",
+    "direct_tools": 25,
+    "risk_counts": {
+      "read": 79,
+      "write": 74,
+      "destructive": 21
+    },
+    "spec_health": 92,
+    "checks": [
+      "TOO_MANY_TOOLS"
+    ],
+    "low_confidence": 1,
+    "drift_status": "ok",
+    "drift": {
+      "psi_method": 2.176,
+      "psi_text_length": 2.2994,
+      "oov_rate": 0.1086,
+      "mean_confidence": 0.9924
+    },
+    "seconds": 0.94
+  },
+  {
+    "api": "DigitalOcean API",
+    "format": "openapi-3.0",
+    "operations": 288,
+    "mode": "curated",
+    "direct_tools": 25,
+    "risk_counts": {
+      "read": 147,
+      "write": 89,
+      "destructive": 52
+    },
+    "spec_health": 81,
+    "checks": [
+      "LONG_DESCRIPTION",
+      "TOO_MANY_TOOLS",
+      "TOOL_POISONING_SUSPECTED"
+    ],
+    "low_confidence": 0,
+    "drift_status": "ok",
+    "drift": {
+      "psi_method": 0.0473,
+      "psi_text_length": 0.6668,
+      "oov_rate": 0.0756,
+      "mean_confidence": 0.9952
+    },
+    "seconds": 1.42
+  },
+  {
+    "api": "Spotify Web API",
+    "format": "openapi-3.0",
+    "operations": 88,
+    "mode": "curated",
+    "direct_tools": 25,
+    "risk_counts": {
+      "read": 58,
+      "write": 22,
+      "destructive": 8
+    },
+    "spec_health": 90,
+    "checks": [
+      "UNDOCUMENTED_PARAMETERS",
+      "TOO_MANY_TOOLS"
+    ],
+    "low_confidence": 0,
+    "drift_status": "alert",
+    "drift": {
+      "psi_method": 0.6939,
+      "psi_text_length": 1.1331,
+      "oov_rate": 0.2512,
+      "mean_confidence": 0.9998
+    },
+    "seconds": 0.37
+  },
+  {
+    "api": "Trello",
+    "format": "openapi-3.0",
+    "operations": 324,
+    "mode": "curated",
+    "direct_tools": 25,
+    "risk_counts": {
+      "read": 143,
+      "write": 151,
+      "destructive": 30
+    },
+    "spec_health": 92,
+    "checks": [
+      "TOO_MANY_TOOLS"
+    ],
+    "low_confidence": 0,
+    "drift_status": "ok",
+    "drift": {
+      "psi_method": 0.626,
+      "psi_text_length": 0.9279,
+      "oov_rate": 0.0052,
+      "mean_confidence": 0.9987
+    },
+    "seconds": 0.92
+  },
+  {
+    "api": "Central Board of Secondary Education",
+    "format": "openapi-3.0",
+    "operations": 16,
+    "mode": "all",
+    "direct_tools": 16,
+    "risk_counts": {
+      "read": 0,
+      "write": 16,
+      "destructive": 0
+    },
+    "spec_health": 100,
+    "checks": [],
+    "low_confidence": 0,
+    "drift_status": "ok",
+    "drift": {
+      "psi_method": 6.8646,
+      "psi_text_length": 7.2902,
+      "oov_rate": 0.1311,
+      "mean_confidence": 0.9994
+    },
+    "seconds": 0.13
+  },
+  {
+    "api": "Pet Clinic API",
+    "format": "openapi-3.0",
+    "operations": 10,
+    "mode": "all",
+    "direct_tools": 10,
+    "risk_counts": {
+      "read": 5,
+      "write": 3,
+      "destructive": 2
+    },
+    "spec_health": 100,
+    "checks": [],
+    "low_confidence": 0,
+    "drift_status": "alert",
+    "drift": {
+      "psi_method": 0.3459,
+      "psi_text_length": 7.2602,
+      "oov_rate": 0.4857,
+      "mean_confidence": 0.9936
+    },
+    "seconds": 0.05
+  }
+]

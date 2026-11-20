@@ -1,0 +1,12 @@
+method,path,operation_id,weak_label,model,gold
+POST,/video/v1/spaces/{SPACE_ID}/broadcasts/{BROADCAST_ID}/stop,stop-space-broadcast,write,write,destructive
+POST,/transfer/repayment/list,transferRepaymentList,write,write,read
+POST,/v2/inventory/batch-retrieve-counts,DeprecatedBatchRetrieveInventoryCounts,write,read,read
+POST,/v1/transfers/{id}/reversals,PostTransfersIdReversals,write,write,destructive
+POST,/conversations.archive,conversations_archive,write,write,destructive
+POST,/transfer/refund/create,transferRefundCreate,write,destructive,destructive
+POST,/v1/customers/{customer}/bank_accounts/{id}/verify,PostCustomersCustomerBankAccountsIdVerify,write,read,write
+POST,/v1/test_helpers/treasury/outbound_transfers/{outbound_transfer}/return,PostTestHelpersTreasuryOutboundTransfersOutboundTransferReturn,write,write,destructive
+POST,/v1/payouts/{payout}/reverse,PostPayoutsPayoutReverse,write,write,destructive
+POST,/v1/disputes/{dispute}/close,PostDisputesDisputeClose,write,write,destructive
+POST,/transactions/enrich,transactionsEnrich,write,write,read

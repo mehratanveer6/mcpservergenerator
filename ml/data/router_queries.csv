@@ -1,0 +1,66 @@
+provider,query,expected
+github.com,show me the open pull requests for this repository,pulls/list
+github.com,open a new PR from my feature branch,pulls/create
+github.com,merge pull request 42 into main,pulls/merge
+github.com,file a bug report in the repo,issues/create
+github.com,what issues are open in the repository,issues/list-for-repo
+github.com,leave a comment on issue 17,issues/create-comment
+github.com,fork this repository to my account,repos/create-fork
+github.com,read the README file contents from the repo,repos/get-content
+github.com,show the commit history of the repository,repos/list-commits
+github.com,permanently delete the repository,repos/delete
+github.com,which branches exist in the repo,repos/list-branches
+github.com,show recent CI workflow runs for the repo,actions/list-workflow-runs-for-repo
+github.com,rerun the failed workflow run,actions/re-run-workflow
+github.com,who am I logged in as,users/get-authenticated
+github.com,find code that mentions useEffect across github,search/code
+github.com,find popular repositories about machine learning,search/repos
+github.com,publish a new release v2.0,repos/create-release
+github.com,give my teammate write access to the repo,repos/add-collaborator
+github.com,star this repository,activity/star-repo-for-authenticated-user
+github.com,put the bug label on an issue,issues/add-labels
+github.com,ask alice to review my pull request,pulls/request-reviewers
+github.com,list dependabot vulnerability alerts for the repo,dependabot/list-alerts-for-repo
+github.com,set up a webhook that fires on push events,repos/create-webhook
+github.com,store an encrypted secret for github actions in a repo,actions/create-or-update-repo-secret
+github.com,who are the members of our organization,orgs/list-members
+stripe.com,show all customers,GetCustomers
+stripe.com,add a new customer with an email address,PostCustomers
+stripe.com,give the customer their money back for a charge,PostRefunds
+stripe.com,list recent card charges,GetCharges
+stripe.com,start a payment of 500 rupees,PostPaymentIntents
+stripe.com,confirm the payment intent,PostPaymentIntentsIntentConfirm
+stripe.com,cancel a payment intent before it completes,PostPaymentIntentsIntentCancel
+stripe.com,list invoices,GetInvoices
+stripe.com,pay an open invoice now,PostInvoicesInvoicePay
+stripe.com,subscribe the customer to a monthly plan,PostSubscriptions
+stripe.com,cancel a customer's subscription,DeleteSubscriptionsSubscriptionExposedId
+stripe.com,how much money is in my account balance,GetBalance
+stripe.com,send funds to my bank account as a payout,PostPayouts
+stripe.com,list products in the catalog,GetProducts
+stripe.com,create a new price for a product,PostPrices
+stripe.com,create a hosted checkout page,PostCheckoutSessions
+stripe.com,show chargebacks and disputes,GetDisputes
+stripe.com,create a 20 percent discount coupon,PostCoupons
+stripe.com,register an endpoint to receive webhook events,PostWebhookEndpoints
+stripe.com,void an invoice that was issued by mistake,PostInvoicesInvoiceVoid
+slack.com,send a message to the general channel,chat_postMessage
+slack.com,edit a message I already sent,chat_update
+slack.com,delete a message,chat_delete
+slack.com,schedule a message for tomorrow morning,chat_scheduleMessage
+slack.com,create a new channel called launch,conversations_create
+slack.com,get the message history of a channel,conversations_history
+slack.com,show the replies in a thread,conversations_replies
+slack.com,invite users to a channel,conversations_invite
+slack.com,list all channels in the workspace,conversations_list
+slack.com,archive the old project channel,conversations_archive
+slack.com,change the channel topic,conversations_setTopic
+slack.com,find a user by their email address,users_lookupByEmail
+slack.com,list everyone in the workspace,users_list
+slack.com,upload a file to the channel,files_upload
+slack.com,add an emoji reaction to a message,reactions_add
+slack.com,pin a message in the channel,pins_add
+slack.com,remind me to submit the report at 5pm,reminders_add
+slack.com,search messages mentioning budget,search_messages
+slack.com,set my presence to away,users_setPresence
+slack.com,kick a user out of the channel,conversations_kick

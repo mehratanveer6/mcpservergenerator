@@ -1,0 +1,26 @@
+{
+  "positives": 20,
+  "negatives": 2173,
+  "high": {
+    "detected": 14,
+    "recall": 0.7,
+    "false_positives": 0,
+    "false_positive_rate": 0.0
+  },
+  "high+medium": {
+    "detected": 20,
+    "recall": 1.0,
+    "false_positives": 2,
+    "false_positive_rate": 0.0009
+  },
+  "by_category": {
+    "concealment": "3/3",
+    "exfiltration": "2/2",
+    "hidden_block": "3/3",
+    "instruction_override": "3/3",
+    "invisible_unicode": "2/2",
+    "secret_access": "5/5",
+    "tool_chaining": "2/2"
+  },
+  "generated_descriptions_still_flagged": 0
+}

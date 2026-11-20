@@ -1,0 +1,52 @@
+{
+  "api": "Pet Clinic API",
+  "source": "examples/petclinic.yaml",
+  "format": "openapi-3.0",
+  "operations": 10,
+  "mode": "all",
+  "direct_tools": 10,
+  "policy": "read_write",
+  "risk_counts": {
+    "read": 5,
+    "write": 3,
+    "destructive": 2
+  },
+  "classifier": "model",
+  "needs_review": [],
+  "doctor": {
+    "score": 100,
+    "stats": {
+      "operations": 10,
+      "methods": {
+        "GET": 4,
+        "POST": 4,
+        "PUT": 1,
+        "DELETE": 1
+      },
+      "tags": 3,
+      "parameters": 8,
+      "with_request_body": 4,
+      "security_schemes": [
+        "apiKeyAuth"
+      ],
+      "format": "openapi-3.0"
+    },
+    "checks": []
+  },
+  "drift": {
+    "psi_method": 0.3459,
+    "psi_text_length": 7.2602,
+    "oov_rate": 0.4857,
+    "baseline_oov_rate": 0.0568,
+    "mean_confidence": 0.9936,
+    "baseline_mean_confidence": 0.9983,
+    "sample_size": 10,
+    "status": "alert",
+    "alerts": [
+      "vocabulary drift: many unseen terms"
+    ]
+  },
+  "bedrock_descriptions_accepted": 0,
+  "warnings": {},
+  "seconds": 0.69
+}

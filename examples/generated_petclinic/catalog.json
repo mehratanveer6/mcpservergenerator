@@ -1,0 +1,354 @@
+{
+ "title": "Pet Clinic API",
+ "version": "1.2.0",
+ "base_url": "http://localhost:8765/api/v1",
+ "auth": [
+  {
+   "scheme": "apiKeyAuth",
+   "type": "apiKey",
+   "in": "header",
+   "name": "X-API-Key"
+  }
+ ],
+ "operations": [
+  {
+   "operation_id": "listPets",
+   "tool_name": "list_pets",
+   "method": "GET",
+   "path": "/pets",
+   "summary": "List pets",
+   "description": "List pets. Returns pets registered at the clinic, optionally filtered by species. Read-only; does not change data. HTTP GET /pets.",
+   "tags": [
+    "pets"
+   ],
+   "risk": "read",
+   "risk_confidence": 1.0,
+   "params": [
+    {
+     "arg": "species",
+     "name": "species",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by species. One of: dog, cat, bird, rabbit."
+    },
+    {
+     "arg": "limit",
+     "name": "limit",
+     "in": "query",
+     "required": false,
+     "type": "integer",
+     "description": "Maximum number of results. Default: 20."
+    }
+   ],
+   "body": null,
+   "direct": true
+  },
+  {
+   "operation_id": "createPet",
+   "tool_name": "create_pet",
+   "method": "POST",
+   "path": "/pets",
+   "summary": "Register a new pet",
+   "description": "Register a new pet. Changes data on the remote service. HTTP POST /pets.",
+   "tags": [
+    "pets"
+   ],
+   "risk": "write",
+   "risk_confidence": 1.0,
+   "params": [],
+   "body": {
+    "mode": "fields",
+    "fields": [
+     {
+      "arg": "name",
+      "name": "name",
+      "required": true,
+      "type": "string",
+      "description": "Pet name."
+     },
+     {
+      "arg": "species",
+      "name": "species",
+      "required": true,
+      "type": "string",
+      "description": "One of: dog, cat, bird, rabbit."
+     },
+     {
+      "arg": "age",
+      "name": "age",
+      "required": false,
+      "type": "integer",
+      "description": "Age in years."
+     },
+     {
+      "arg": "owner_id",
+      "name": "owner_id",
+      "required": false,
+      "type": "integer",
+      "description": "Owner identifier."
+     }
+    ],
+    "required": true,
+    "content_type": "application/json"
+   },
+   "direct": true
+  },
+  {
+   "operation_id": "getPet",
+   "tool_name": "get_pet",
+   "method": "GET",
+   "path": "/pets/{petId}",
+   "summary": "Get a pet by id",
+   "description": "Get a pet by id. Read-only; does not change data. HTTP GET /pets/{petId}.",
+   "tags": [
+    "pets"
+   ],
+   "risk": "read",
+   "risk_confidence": 1.0,
+   "params": [
+    {
+     "arg": "pet_id",
+     "name": "petId",
+     "in": "path",
+     "required": true,
+     "type": "integer",
+     "description": "Pet identifier."
+    }
+   ],
+   "body": null,
+   "direct": true
+  },
+  {
+   "operation_id": "updatePet",
+   "tool_name": "update_pet",
+   "method": "PUT",
+   "path": "/pets/{petId}",
+   "summary": "Update a pet",
+   "description": "Update a pet. Changes data on the remote service. HTTP PUT /pets/{petId}.",
+   "tags": [
+    "pets"
+   ],
+   "risk": "write",
+   "risk_confidence": 1.0,
+   "params": [
+    {
+     "arg": "pet_id",
+     "name": "petId",
+     "in": "path",
+     "required": true,
+     "type": "integer",
+     "description": "Pet identifier."
+    }
+   ],
+   "body": {
+    "mode": "fields",
+    "fields": [
+     {
+      "arg": "name",
+      "name": "name",
+      "required": true,
+      "type": "string",
+      "description": "Pet name."
+     },
+     {
+      "arg": "species",
+      "name": "species",
+      "required": true,
+      "type": "string",
+      "description": "One of: dog, cat, bird, rabbit."
+     },
+     {
+      "arg": "age",
+      "name": "age",
+      "required": false,
+      "type": "integer",
+      "description": "Age in years."
+     },
+     {
+      "arg": "owner_id",
+      "name": "owner_id",
+      "required": false,
+      "type": "integer",
+      "description": "Owner identifier."
+     }
+    ],
+    "required": true,
+    "content_type": "application/json"
+   },
+   "direct": true
+  },
+  {
+   "operation_id": "deletePet",
+   "tool_name": "delete_pet",
+   "method": "DELETE",
+   "path": "/pets/{petId}",
+   "summary": "Delete a pet record",
+   "description": "Delete a pet record. DESTRUCTIVE: deletes, revokes, cancels or reverses data. Confirm with the user first. HTTP DELETE /pets/{petId}.",
+   "tags": [
+    "pets"
+   ],
+   "risk": "destructive",
+   "risk_confidence": 1.0,
+   "params": [
+    {
+     "arg": "pet_id",
+     "name": "petId",
+     "in": "path",
+     "required": true,
+     "type": "integer",
+     "description": "Pet identifier."
+    }
+   ],
+   "body": null,
+   "direct": true
+  },
+  {
+   "operation_id": "searchPets",
+   "tool_name": "search_pets",
+   "method": "POST",
+   "path": "/pets/search",
+   "summary": "Search pets by free text",
+   "description": "Search pets by free text. Read-only; does not change data. HTTP POST /pets/search.",
+   "tags": [
+    "pets"
+   ],
+   "risk": "read",
+   "risk_confidence": 0.938,
+   "params": [],
+   "body": {
+    "mode": "fields",
+    "fields": [
+     {
+      "arg": "query",
+      "name": "query",
+      "required": true,
+      "type": "string",
+      "description": "Text to match against name and species."
+     }
+    ],
+    "required": true,
+    "content_type": "application/json"
+   },
+   "direct": true
+  },
+  {
+   "operation_id": "listAppointments",
+   "tool_name": "list_appointments",
+   "method": "GET",
+   "path": "/appointments",
+   "summary": "List appointments",
+   "description": "List appointments. Read-only; does not change data. HTTP GET /appointments.",
+   "tags": [
+    "appointments"
+   ],
+   "risk": "read",
+   "risk_confidence": 1.0,
+   "params": [
+    {
+     "arg": "date",
+     "name": "date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Day to list (YYYY-MM-DD)."
+    }
+   ],
+   "body": null,
+   "direct": true
+  },
+  {
+   "operation_id": "bookAppointment",
+   "tool_name": "book_appointment",
+   "method": "POST",
+   "path": "/appointments",
+   "summary": "Book an appointment for a pet",
+   "description": "Book an appointment for a pet. Changes data on the remote service. HTTP POST /appointments.",
+   "tags": [
+    "appointments"
+   ],
+   "risk": "write",
+   "risk_confidence": 0.999,
+   "params": [],
+   "body": {
+    "mode": "fields",
+    "fields": [
+     {
+      "arg": "pet_id",
+      "name": "pet_id",
+      "required": true,
+      "type": "integer",
+      "description": ""
+     },
+     {
+      "arg": "date",
+      "name": "date",
+      "required": true,
+      "type": "string",
+      "description": ""
+     },
+     {
+      "arg": "reason",
+      "name": "reason",
+      "required": false,
+      "type": "string",
+      "description": ""
+     }
+    ],
+    "required": true,
+    "content_type": "application/json"
+   },
+   "direct": true
+  },
+  {
+   "operation_id": "cancelAppointment",
+   "tool_name": "cancel_appointment",
+   "method": "POST",
+   "path": "/appointments/{appointmentId}/cancel",
+   "summary": "Cancel an appointment",
+   "description": "Cancel an appointment. DESTRUCTIVE: deletes, revokes, cancels or reverses data. Confirm with the user first. HTTP POST /appointments/{appointmentId}/cancel.",
+   "tags": [
+    "appointments"
+   ],
+   "risk": "destructive",
+   "risk_confidence": 0.999,
+   "params": [
+    {
+     "arg": "appointment_id",
+     "name": "appointmentId",
+     "in": "path",
+     "required": true,
+     "type": "integer",
+     "description": ""
+    }
+   ],
+   "body": null,
+   "direct": true
+  },
+  {
+   "operation_id": "getOwner",
+   "tool_name": "get_owner",
+   "method": "GET",
+   "path": "/owners/{ownerId}",
+   "summary": "Get an owner and their pets",
+   "description": "Get an owner and their pets. Read-only; does not change data. HTTP GET /owners/{ownerId}.",
+   "tags": [
+    "owners"
+   ],
+   "risk": "read",
+   "risk_confidence": 1.0,
+   "params": [
+    {
+     "arg": "owner_id",
+     "name": "ownerId",
+     "in": "path",
+     "required": true,
+     "type": "integer",
+     "description": ""
+    }
+   ],
+   "body": null,
+   "direct": true
+  }
+ ]
+}

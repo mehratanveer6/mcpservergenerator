@@ -1,0 +1,3 @@
+# Tooling for the AWS scripts in this folder (not needed for local use)
+sagemaker>=2.220,<3
+boto3>=1.34

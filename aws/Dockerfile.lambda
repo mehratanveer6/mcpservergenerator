@@ -1,0 +1,6 @@
+# Container image for the MCPForge generator Lambda function
+FROM public.ecr.aws/lambda/python:3.12
+COPY pyproject.toml README.md ${LAMBDA_TASK_ROOT}/
+COPY mcpforge ${LAMBDA_TASK_ROOT}/mcpforge
+RUN pip install --no-cache-dir "${LAMBDA_TASK_ROOT}[aws]"
+CMD ["mcpforge.aws.lambda_handler.handler"]

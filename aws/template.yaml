@@ -1,0 +1,140 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: MCPForge generator service (Lambda container + HTTP API + S3 + CloudWatch alarms)
+
+Parameters:
+  AlarmEmail:
+    Type: String
+    Description: Address that receives drift and quality alarms
+  EmbeddingModelId:
+    Type: String
+    Default: amazon.titan-embed-text-v2:0
+  TextModelId:
+    Type: String
+    Default: amazon.nova-lite-v1:0
+
+Resources:
+  OutputBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault: {SSEAlgorithm: AES256}
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: expire-generated
+            Status: Enabled
+            Prefix: generated/
+            ExpirationInDays: 7
+
+  GeneratorApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 20
+        ThrottlingRateLimit: 10
+
+  GeneratorFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Dockerfile: aws/Dockerfile.lambda
+      DockerContext: ..
+      DockerTag: latest
+    Properties:
+      PackageType: Image
+      Architectures: [arm64]
+      MemorySize: 2048
+      Timeout: 120
+      EphemeralStorage: {Size: 2048}
+      Environment:
+        Variables:
+          OUTPUT_BUCKET: !Ref OutputBucket
+          MCPFORGE_METRIC_NAMESPACE: MCPForge
+          BEDROCK_EMBED_MODEL_ID: !Ref EmbeddingModelId
+      Events:
+        Generate:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref GeneratorApi
+            Path: /generate
+            Method: POST
+            Auth:
+              Authorizer: AWS_IAM
+      Policies:
+        - S3CrudPolicy: {BucketName: !Ref OutputBucket}
+        - Statement:
+            - Sid: InvokeSelectedBedrockModels
+              Effect: Allow
+              Action: [bedrock:InvokeModel, bedrock:Converse]
+              Resource:
+                - !Sub arn:aws:bedrock:${AWS::Region}::foundation-model/${EmbeddingModelId}
+                - !Sub arn:aws:bedrock:${AWS::Region}::foundation-model/${TextModelId}
+            - Sid: PublishOwnMetricsOnly
+              Effect: Allow
+              Action: cloudwatch:PutMetricData
+              Resource: "*"
+              Condition:
+                StringEquals: {cloudwatch:namespace: MCPForge}
+
+  AlarmTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      KmsMasterKeyId: alias/aws/sns
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref AlarmEmail
+
+  LowConfidenceAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Classifier confidence on incoming specs dropped; review labels and consider retraining
+      Namespace: MCPForge
+      MetricName: mean_confidence
+      Statistic: Average
+      Period: 86400
+      EvaluationPeriods: 1
+      Threshold: 0.85
+      ComparisonOperator: LessThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [!Ref AlarmTopic]
+
+  VocabularyDriftAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Share of unseen vocabulary in incoming specs is high (input drift)
+      Namespace: MCPForge
+      MetricName: oov_rate
+      Statistic: Average
+      Period: 86400
+      EvaluationPeriods: 1
+      Threshold: 0.30
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [!Ref AlarmTopic]
+
+  GeneratorErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Generator Lambda errors
+      Namespace: AWS/Lambda
+      MetricName: Errors
+      Dimensions:
+        - {Name: FunctionName, Value: !Ref GeneratorFunction}
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [!Ref AlarmTopic]
+
+Outputs:
+  GenerateEndpoint:
+    Value: !Sub https://${GeneratorApi}.execute-api.${AWS::Region}.amazonaws.com/generate
+  OutputBucketName:
+    Value: !Ref OutputBucket

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MCPForge: ML-assisted MCP server generator</title>
+<meta name="description" content="MCPForge turns an OpenAPI specification into a safe, curated Model Context Protocol server, using an ML risk classifier trained on 8,218 real API operations.">
+<style>
+  :root {
+    --bg: #f7f7f4; --surface: #ffffff; --ink: #0b0b0b; --ink2: #52514e; --muted: #8a8984; --line: #e1e0d9;
+    --blue: #2a78d6; --blue-soft: #e8f1fc; --orange: #eb6834; --gray: #c3c2b7;
+    --read: #1baf7a; --read-soft: #e3f6ee; --write: #c98800; --write-soft: #fdf3dc; --destr: #d03b3b; --destr-soft: #fbe6e6;
+    --code-bg: #14171c; --code-ink: #e6e6e3;
+    --radius: 10px; --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--ink); background: var(--bg); }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  nav { position: sticky; top: 0; z-index: 10; background: rgba(247,247,244,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; align-items: center; gap: 22px; height: 56px; }
+  nav .brand { font-weight: 700; font-size: 17px; color: var(--ink); letter-spacing: -.01em; }
+  nav .brand span { color: var(--blue); }
+  nav .links { display: flex; gap: 18px; margin-left: auto; font-size: 14px; }
+  nav .links a { color: var(--ink2); }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 8px; font-weight: 600; font-size: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+  .btn:hover { text-decoration: none; border-color: var(--gray); }
+  .btn.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .btn.primary:hover { background: #2368bd; }
+  .btn svg { width: 16px; height: 16px; }
+  header.hero { padding: 64px 0 40px; }
+  .eyebrow { font-size: 13px; font-weight: 600; color: var(--blue); text-transform: uppercase; letter-spacing: .06em; }
+  h1 { font-size: 44px; line-height: 1.1; letter-spacing: -.025em; margin: 10px 0 16px; }
+  .lede { font-size: 18px; color: var(--ink2); max-width: 760px; margin: 0 0 26px; }
+  .hero .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 40px; }
+  .tile { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+  .tile .num { font-size: 30px; font-weight: 700; letter-spacing: -.02em; }
+  .tile .lbl { color: var(--ink2); font-size: 13.5px; line-height: 1.45; }
+  section { padding: 44px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: 28px; letter-spacing: -.02em; margin: 0 0 8px; }
+  h3 { font-size: 17px; margin: 0 0 12px; }
+  .sub { color: var(--ink2); margin: 0 0 26px; max-width: 800px; }
+  .pipeline { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; align-items: stretch; }
+  .step { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 12px; font-size: 13px; color: var(--ink2); }
+  .step b { display: block; color: var(--ink); font-size: 14px; margin-bottom: 4px; }
+  .step .n { position: absolute; top: -10px; left: 12px; background: var(--blue); color: #fff; font-size: 11px; font-weight: 700; border-radius: 10px; padding: 1px 7px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+  .pill { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 14px; font-size: 14px; cursor: pointer; color: var(--ink); font-weight: 500; }
+  .pill small { color: var(--muted); font-weight: 400; margin-left: 4px; }
+  .pill.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .pill.on small { color: #c9c9c4; }
+  .stats { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 18px; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; }
+  .stat .v { font-size: 24px; font-weight: 700; letter-spacing: -.02em; }
+  .stat .k { font-size: 12.5px; color: var(--ink2); }
+  .riskbar { display: flex; height: 14px; border-radius: 4px; overflow: hidden; gap: 2px; margin: 10px 0 10px; }
+  .riskbar div { height: 100%; }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--ink2); }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+  .badge { display: inline-block; font-size: 11.5px; font-weight: 600; border-radius: 5px; padding: 1px 7px; text-transform: uppercase; letter-spacing: .03em; white-space: nowrap; }
+  .b-read { background: var(--read-soft); color: #0f7a54; }
+  .b-write { background: var(--write-soft); color: #8a5d00; }
+  .b-destructive { background: var(--destr-soft); color: #a52626; }
+  .b-high, .b-error { background: var(--destr-soft); color: #a52626; }
+  .b-medium, .b-warning { background: var(--write-soft); color: #8a5d00; }
+  .b-info, .b-low { background: var(--blue-soft); color: #1d5fae; }
+  .b-ok { background: var(--read-soft); color: #0f7a54; }
+  .checks { list-style: none; margin: 0; padding: 0; }
+  .checks li { padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; }
+  .checks li:first-child { border-top: 0; padding-top: 0; }
+  .checks code { font-family: var(--mono); font-size: 12.5px; background: #f0f0ec; padding: 1px 5px; border-radius: 4px; }
+  .checks .msg { color: var(--ink2); display: block; margin-top: 3px; }
+  .empty { color: var(--ink2); font-size: 14px; }
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+  .toolbar input[type=search], .toolbar select { font: inherit; font-size: 14px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 7px; background: #fff; }
+  .toolbar input[type=search] { flex: 1; min-width: 200px; }
+  .toolbar label { font-size: 14px; color: var(--ink2); display: flex; gap: 6px; align-items: center; }
+  .tablewrap { overflow: auto; max-height: 520px; border: 1px solid var(--line); border-radius: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { position: sticky; top: 0; background: #f2f2ee; text-align: left; font-weight: 600; color: var(--ink2); padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  td { padding: 7px 10px; border-bottom: 1px solid #efefea; vertical-align: top; }
+  td.mono, .mono { font-family: var(--mono); font-size: 12.5px; }
+  td.path { overflow-wrap: anywhere; }
+  table.ops { min-width: 860px; }
+  .m { font-family: var(--mono); font-size: 11.5px; font-weight: 700; }
+  .m-GET { color: #0f7a54; } .m-POST { color: #1d5fae; } .m-PUT, .m-PATCH { color: #8a5d00; } .m-DELETE { color: #a52626; }
+  .count { font-size: 13px; color: var(--ink2); margin-top: 8px; }
+  .files { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid var(--line); margin-bottom: 0; }
+  .files button { font: inherit; font-size: 13px; font-family: var(--mono); padding: 8px 12px; border: 0; background: none; cursor: pointer; color: var(--ink2); border-bottom: 2px solid transparent; margin-bottom: -1px; }
+  .files button.on { color: var(--ink); border-bottom-color: var(--blue); font-weight: 600; }
+  pre.code { margin: 0; background: var(--code-bg); color: var(--code-ink); padding: 16px 18px; border-radius: 0 0 8px 8px; overflow: auto; max-height: 520px; font: 12.5px/1.55 var(--mono); tab-size: 4; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+  .hbars .r { display: grid; grid-template-columns: 210px 1fr 56px; gap: 10px; align-items: center; font-size: 13.5px; margin: 7px 0; }
+  .hbars .track { background: #f0f0ec; border-radius: 4px; height: 16px; position: relative; }
+  .hbars .fill { height: 100%; border-radius: 4px; background: var(--gray); }
+  .hbars .fill.hi { background: var(--blue); }
+  .hbars .val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+  .ctx .api { margin: 14px 0 4px; font-size: 14px; font-weight: 600; }
+  .ctx .r { display: grid; grid-template-columns: 62px 1fr 160px; gap: 10px; align-items: center; font-size: 13px; color: var(--ink2); margin: 4px 0; }
+  .ctx .track { height: 12px; }
+  .ctx .fill { height: 100%; border-radius: 3px; }
+  .note { font-size: 12.5px; color: var(--muted); margin-top: 12px; }
+  .aws { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .aws .card h3 { font-size: 15.5px; margin-bottom: 6px; }
+  .aws .card p { margin: 0; color: var(--ink2); font-size: 14px; }
+  .aws .card code { font-family: var(--mono); font-size: 12px; color: var(--ink2); }
+  pre.shell { margin: 0; background: var(--code-bg); color: var(--code-ink); padding: 16px 18px; border-radius: 8px; overflow: auto; font: 13px/1.6 var(--mono); }
+  pre.shell .c { color: #8b949e; }
+  footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--ink2); font-size: 14px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  @media (max-width: 900px) {
+    h1 { font-size: 34px; }
+    .tiles, .stats { grid-template-columns: repeat(2, 1fr); }
+    .pipeline { grid-template-columns: repeat(2, 1fr); row-gap: 18px; }
+    .grid2, .grid3, .aws { grid-template-columns: 1fr; }
+    nav .links { display: none; }
+    .hbars .r { grid-template-columns: 130px 1fr 50px; }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#">MCP<span>Forge</span></a>
+    <div class="links">
+      <a href="#how">How it works</a><a href="#demo">Live demo</a><a href="#results">Results</a><a href="#aws">AWS</a><a href="#run">Run it</a>
+    </div>
+    <a class="btn" href="https://github.com/mehratanveer6/mcpservergenerator" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Industrial Internship project &middot; AWS Certified Machine Learning Engineer, Associate</div>
+    <h1>MCPForge: an ML-assisted<br>MCP server generator</h1>
+    <p class="lede">MCPForge turns an OpenAPI 3.x or Swagger 2.0 specification into a ready-to-run Model Context Protocol server that an AI assistant can use. Before writing any code it checks the spec, labels every operation as read, write or destructive with a trained classifier, scans descriptions for prompt-injection attacks, and curates large APIs so they do not flood the model's context.</p>
+    <div class="actions">
+      <a class="btn primary" href="#demo">Explore the live demo</a>
+      <a class="btn" href="https://github.com/mehratanveer6/mcpservergenerator" target="_blank" rel="noopener">View source code</a>
+    </div>
+    <div class="tiles" id="tiles"></div>
+  </div>
+</header>
+
+<section id="how">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <p class="sub">The specification is treated as data and passes through a small ML pipeline. The output is a complete Python project: an MCP server, its tool catalog, a search router, a Dockerfile and a report.</p>
+    <div class="pipeline">
+      <div class="step"><span class="n">1</span><b>Load</b>Parse OpenAPI 3.x or Swagger 2.0 and resolve <code>$ref</code> links with a depth limit.</div>
+      <div class="step"><span class="n">2</span><b>Spec doctor</b>Find defects that break generated servers and give the spec a health score out of 100.</div>
+      <div class="step"><span class="n">3</span><b>Risk classifier</b>Rules plus logistic regression label each operation read, write or destructive.</div>
+      <div class="step"><span class="n">4</span><b>Poisoning scanner</b>Withhold descriptions with hidden instructions, secret-file requests or invisible Unicode.</div>
+      <div class="step"><span class="n">5</span><b>Curate</b>Expose at most 25 direct tools; the rest sit behind <code>search_operations</code> and <code>call_operation</code>.</div>
+      <div class="step"><span class="n">6</span><b>Drift check</b>Compare the new spec with training statistics and publish metrics to CloudWatch.</div>
+      <div class="step"><span class="n">7</span><b>Generate</b>Write <code>server.py</code>, <code>catalog.json</code>, <code>router.py</code>, a Dockerfile and a report.</div>
+    </div>
+  </div>
+</section>
+
+<section id="demo">
+  <div class="wrap">
+    <h2>Live demo: real generator output</h2>
+    <p class="sub">Each example below is the actual output of <code>mcpforge generate</code> on that specification: two small examples from the repository and three large public APIs from the APIs.guru directory. Pick one to see the spec health report, the risk label of every operation, the security findings and the generated code. Every generated server can be downloaded and run.</p>
+    <div class="pills" id="pills"></div>
+    <div class="stats" id="stats"></div>
+    <div class="grid2" style="margin-bottom:18px">
+      <div class="card">
+        <h3>Risk labels</h3>
+        <div id="riskbar"></div>
+        <p class="note" id="policyNote"></p>
+      </div>
+      <div class="card">
+        <h3>Tool-poisoning scan</h3>
+        <div id="poison"></div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:18px">
+      <h3>Spec doctor <span id="healthBadge"></span></h3>
+      <ul class="checks" id="checks"></ul>
+    </div>
+    <div class="card" style="margin-bottom:18px">
+      <h3>Operations and their labels</h3>
+      <div class="toolbar">
+        <input type="search" id="q" placeholder="Search path, tool name or summary">
+        <select id="riskFilter"><option value="">All risk labels</option><option value="read">Read</option><option value="write">Write</option><option value="destructive">Destructive</option></select>
+        <label><input type="checkbox" id="directOnly"> Direct tools only</label>
+        <label><input type="checkbox" id="reviewOnly"> Low confidence only</label>
+      </div>
+      <div class="tablewrap"><table class="ops">
+        <thead><tr><th style="width:70px">Method</th><th style="width:34%">Path</th><th>Tool name</th><th style="width:105px">Risk</th><th style="width:120px">Confidence</th><th style="width:140px">Exposed as</th></tr></thead>
+        <tbody id="opsBody"></tbody>
+      </table></div>
+      <div class="count" id="opsCount"></div>
+    </div>
+    <div class="card">
+      <div class="row">
+        <h3 style="margin:0">Generated project</h3>
+        <a class="btn primary" id="zipBtn" href="#" download>Download generated server (.zip)</a>
+      </div>
+      <div class="files" id="fileTabs"></div>
+      <pre class="code" id="fileView"></pre>
+    </div>
+  </div>
+</section>
+
+<section id="results">
+  <div class="wrap">
+    <h2>Results</h2>
+    <p class="sub" id="datasetNote"></p>
+    <div class="grid2">
+      <div class="card">
+        <h3>Risk classifier: macro F1 on the held-out gold set</h3>
+        <div class="hbars" id="modelBars"></div>
+        <p class="note">183 hand-labelled operations from 8 API providers that were never seen in training. The hybrid model combines high-precision rules with the tuned logistic regression.</p>
+      </div>
+      <div class="card ctx">
+        <h3>Tool list sent to the model: all tools vs curated</h3>
+        <div id="ctxBars"></div>
+        <div class="legend" style="margin-top:12px"><span><i style="background:var(--gray)"></i>All operations as tools</span><span><i style="background:var(--blue)"></i>Curated (25 direct + search and call)</span></div>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:18px">
+      <div class="card">
+        <h3>Tool router: finding the right operation</h3>
+        <div class="tablewrap" style="max-height:none"><table id="routerTable"></table></div>
+        <p class="note">65 natural-language requests over the GitHub, Stripe and Slack APIs. Recall@5 is the share of requests whose correct operation is in the top five results.</p>
+      </div>
+      <div class="card">
+        <h3>Tool-poisoning scanner</h3>
+        <div class="tablewrap" style="max-height:none"><table id="poisonTable"></table></div>
+        <p class="note" id="poisonNote"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="aws">
+  <div class="wrap">
+    <h2>AWS machine learning stack</h2>
+    <p class="sub">The ML side is written to run on AWS, following the services covered by the AWS Certified Machine Learning Engineer, Associate (MLA-C01) exam. The code is in the <code>aws/</code> and <code>mcpforge/aws/</code> folders of the repository.</p>
+    <div class="aws">
+      <div class="card"><h3>SageMaker training</h3><p>Script-mode training job for the risk classifier with the scikit-learn container. <code>aws/sagemaker_train_deploy.py</code></p></div>
+      <div class="card"><h3>Automatic Model Tuning</h3><p>Hyperparameter tuning of the regularisation strength C, the n-gram range and the vocabulary size, optimising macro F1.</p></div>
+      <div class="card"><h3>SageMaker Pipeline</h3><p>Train, evaluate on the gold set, then a quality gate: the model is registered in the Model Registry only if macro F1 reaches the threshold. <code>aws/sagemaker_pipeline.py</code></p></div>
+      <div class="card"><h3>Serverless inference</h3><p>The registered model is deployed to a SageMaker serverless endpoint, so there is no idle cost between generations.</p></div>
+      <div class="card"><h3>Lambda + API Gateway</h3><p>The generator itself runs as a container Lambda behind an HTTP API, defined with AWS SAM. <code>aws/template.yaml</code></p></div>
+      <div class="card"><h3>Bedrock and CloudWatch</h3><p>Optional Titan Text Embeddings V2 router and Bedrock description rewriting; drift metrics are published to CloudWatch. <code>mcpforge/aws/</code></p></div>
+    </div>
+  </div>
+</section>
+
+<section id="run">
+  <div class="wrap">
+    <h2>Run it yourself</h2>
+    <p class="sub">MCPForge is a Python package with a command line interface. The generated server works with any MCP client over stdio.</p>
+<pre class="shell"><span class="c"># install</span>
+git clone https://github.com/mehratanveer6/mcpservergenerator
+cd mcpservergenerator
+pip install -e ".[runtime]"
+
+<span class="c"># inspect a spec</span>
+mcpforge doctor examples/petclinic.yaml        <span class="c"># spec health report</span>
+mcpforge classify examples/petclinic.yaml      <span class="c"># risk label per operation</span>
+mcpforge scan examples/poisoned.yaml           <span class="c"># tool-poisoning scan</span>
+
+<span class="c"># generate and start an MCP server</span>
+mcpforge generate examples/petclinic.yaml -o out/petclinic
+cd out/petclinic &amp;&amp; pip install -e . &amp;&amp; python server.py</pre>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>MCPForge &middot; Tanveer Mehra &middot; 2026 &middot; MIT License</span>
+    <a href="https://github.com/mehratanveer6/mcpservergenerator" target="_blank" rel="noopener">github.com/mehratanveer6/mcpservergenerator</a>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script>
+(() => {
+  const D = window.MCPFORGE;
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const fmt = (n) => Number(n).toLocaleString("en-US");
+  const RISK = { read: "var(--read)", write: "var(--write)", destructive: "var(--destr)" };
+
+  // ---------- hero tiles
+  const M = D.metrics, gold = M.gold, ctx = D.router.context_cost;
+  const gh = ctx["GitHub v3 REST API"];
+  $("tiles").innerHTML = [
+    [fmt(M.dataset.operations), `real API operations used to train the risk classifier (${M.dataset.apis} APIs, ${M.dataset.providers} providers)`],
+    [gold.hybrid_final.accuracy.toFixed(3), `accuracy on unseen providers, against ${gold.method_rule.accuracy.toFixed(3)} for an HTTP-method rule`],
+    [`${(gh.reduction * 100).toFixed(1)}%`, `smaller tool list for the GitHub API (${gh.all.tools} tools down to ${gh.curated.tools})`],
+    [`${D.poisoning["high+medium"].detected}/${D.poisoning.positives}`, `poisoning attacks detected, with ${D.poisoning["high+medium"].false_positives} false positives in ${fmt(D.poisoning.negatives)} real descriptions`],
+  ].map(([n, l]) => `<div class="tile"><div class="num">${n}</div><div class="lbl">${l}</div></div>`).join("");
+
+  // ---------- demo explorer
+  let run = null, fileName = "server.py";
+  $("pills").innerHTML = D.runs.map((r, i) => `<button class="pill" data-i="${i}">${esc(r.api)}<small>${fmt(r.operations)} ops</small></button>`).join("");
+  $("pills").addEventListener("click", (e) => { const b = e.target.closest(".pill"); if (b) select(+b.dataset.i); });
+  ["q", "riskFilter", "directOnly", "reviewOnly"].forEach((id) => $(id).addEventListener("input", renderOps));
+
+  function select(i) {
+    run = D.runs[i];
+    document.querySelectorAll(".pill").forEach((p, j) => p.classList.toggle("on", j === i));
+    const rc = run.risk_counts, total = rc.read + rc.write + rc.destructive;
+    $("stats").innerHTML = [
+      [fmt(run.operations), "operations in the spec"],
+      [fmt(run.direct_tools), run.mode === "curated" ? "direct tools (curated mode)" : "direct tools (all exposed)"],
+      [`${run.doctor.score}/100`, "spec health score"],
+      [run.classifier === "model" ? "ML model" : "Rules", "risk classifier used"],
+      [fmt(run.needs_review), "low-confidence labels to review"],
+      [`${run.seconds < 1 ? run.seconds.toFixed(2) : run.seconds.toFixed(1)} s`, "generation time"],
+    ].map(([v, k]) => `<div class="stat"><div class="v">${v}</div><div class="k">${k}</div></div>`).join("");
+    $("riskbar").innerHTML = `<div class="riskbar">${["read", "write", "destructive"].map((k) => rc[k] ? `<div title="${k}: ${rc[k]}" style="width:${rc[k] / total * 100}%;background:${RISK[k]}"></div>` : "").join("")}</div>
+      <div class="legend">${["read", "write", "destructive"].map((k) => `<span><i style="background:${RISK[k]}"></i>${k[0].toUpperCase() + k.slice(1)}: <b>${fmt(rc[k])}</b> (${Math.round(rc[k] / total * 100)}%)</span>`).join("")}</div>`;
+    $("policyNote").textContent = `Labels become MCP tool annotations (readOnlyHint, destructiveHint, idempotentHint). The generated server runs with the "${run.policy}" policy by default, so destructive tools are blocked unless the policy is set to "full".`;
+    const withheld = Object.values(run.warnings).filter((ws) => ws.some((w) => w.includes("poisoning"))).length;
+    $("poison").innerHTML = run.findings.length
+      ? `<p class="empty" style="margin-top:0">${run.findings.length} finding(s). ${withheld ? `Descriptions of ${withheld} operation(s) were withheld from the generated tools.` : "Low severity only, so it is reported for review and nothing was withheld."}</p><ul class="checks">${run.findings.map((f) => `<li><span class="badge b-${esc(f.severity)}">${esc(f.severity)}</span> <code>${esc(f.op)}</code> ${esc(f.rule)}<span class="msg mono">${esc(f.excerpt)}</span></li>`).join("")}</ul>`
+      : `<p class="empty" style="margin-top:0"><span class="badge b-ok">clean</span> No hidden instructions, secret-file requests, exfiltration phrasing or invisible Unicode found in ${fmt(run.operations)} operation descriptions.</p>`;
+    const sc = run.doctor.score;
+    $("healthBadge").innerHTML = `<span class="badge ${sc >= 85 ? "b-ok" : sc >= 70 ? "b-warning" : "b-high"}">${sc}/100</span>`;
+    $("checks").innerHTML = run.doctor.checks.length
+      ? run.doctor.checks.map((c) => `<li><span class="badge b-${esc(c.severity)}">${esc(c.severity)}</span> <code>${esc(c.code)}</code>${c.affected ? ` <span class="empty">(${esc(c.affected)} affected)</span>` : ""}<span class="msg">${esc(c.message)}</span></li>`).join("")
+      : `<li class="empty"><span class="badge b-ok">healthy</span> No defects found: base URL, security schemes, operation ids and descriptions are all present.</li>`;
+    $("q").value = ""; $("riskFilter").value = ""; $("directOnly").checked = false; $("reviewOnly").checked = false;
+    renderOps();
+    const names = Object.keys(run.files);
+    if (!names.includes(fileName)) fileName = names[0];
+    $("fileTabs").innerHTML = names.map((n) => `<button data-f="${esc(n)}">${esc(n)}</button>`).join("");
+    $("zipBtn").href = run.zip;
+    $("zipBtn").textContent = `Download generated server (.zip, ${run.zip_kb} KB)`;
+    showFile(fileName);
+  }
+
+  $("fileTabs").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) showFile(b.dataset.f); });
+  function showFile(n) {
+    fileName = n;
+    document.querySelectorAll("#fileTabs button").forEach((b) => b.classList.toggle("on", b.dataset.f === n));
+    $("fileView").textContent = run.files[n];
+    $("fileView").scrollTop = 0;
+  }
+
+  function renderOps() {
+    const q = $("q").value.trim().toLowerCase(), rf = $("riskFilter").value, d = $("directOnly").checked, v = $("reviewOnly").checked;
+    const rows = run.ops.filter((o) => (!rf || o.r === rf) && (!d || o.d) && (!v || o.v) &&
+      (!q || o.p.toLowerCase().includes(q) || o.t.includes(q) || o.s.toLowerCase().includes(q) || o.m.toLowerCase() === q));
+    const shown = rows.slice(0, 300);
+    $("opsBody").innerHTML = shown.map((o) => `<tr><td class="m m-${o.m}">${o.m}</td><td class="mono path" title="${esc(o.s)}">${esc(o.p)}</td><td class="mono">${esc(o.t)}</td>
+      <td><span class="badge b-${o.r}">${o.r}</span></td><td style="font-variant-numeric:tabular-nums">${o.c.toFixed(2)}${o.v ? ' <span class="badge b-warning">review</span>' : ""}</td>
+      <td>${o.d ? "Direct tool" : '<span class="empty">via call_operation</span>'}</td></tr>`).join("") || `<tr><td colspan="6" class="empty">No operations match.</td></tr>`;
+    $("opsCount").textContent = `Showing ${fmt(shown.length)} of ${fmt(rows.length)} matching operations (${fmt(run.ops.length)} in total).`;
+  }
+
+  // ---------- results
+  $("datasetNote").textContent = `The classifier was trained on ${fmt(M.dataset.operations)} operations from ${M.dataset.apis} public APIs (${M.dataset.providers} providers, APIs.guru directory) and tested on providers it never saw during training. All numbers below come from the evaluation scripts in ml/ and are stored in ml/reports/.`;
+  const models = [["hybrid_final", "Hybrid (rules + model)"], ["logreg_tuned", "Logistic regression, tuned"], ["linear_svm", "Linear SVM"], ["random_forest", "Random forest"], ["complement_nb", "Complement naive Bayes"], ["method_rule", "HTTP-method rule"]];
+  $("modelBars").innerHTML = models.map(([k, label]) => {
+    const f = gold[k].macro_f1;
+    return `<div class="r" title="accuracy ${gold[k].accuracy.toFixed(3)}, destructive recall ${gold[k].destructive_recall.toFixed(3)}"><span>${label}</span><div class="track"><div class="fill ${k === "hybrid_final" ? "hi" : ""}" style="width:${f * 100}%"></div></div><span class="val">${f.toFixed(3)}</span></div>`;
+  }).join("");
+  const maxChars = Math.max(...Object.values(ctx).map((c) => c.all.chars));
+  $("ctxBars").innerHTML = Object.entries(ctx).sort((a, b) => b[1].all.chars - a[1].all.chars).map(([api, c]) => `
+    <div class="api">${esc(api)} <span class="badge b-ok">${Math.round(c.reduction * 1000) / 10}% smaller</span></div>
+    <div class="r"><span>All</span><div class="track"><div class="fill" style="width:${c.all.chars / maxChars * 100}%;background:var(--gray)"></div></div><span>${fmt(c.all.tools)} tools, ${fmt(Math.round(c.all.chars / 1000))}k chars</span></div>
+    <div class="r"><span>Curated</span><div class="track"><div class="fill" style="width:${Math.max(c.curated.chars / maxChars * 100, .6)}%;background:var(--blue)"></div></div><span>${fmt(c.curated.tools)} tools, ${fmt(Math.round(c.curated.chars / 1000))}k chars</span></div>`).join("");
+  const ov = D.router.retrieval.overall;
+  $("routerTable").innerHTML = `<thead><tr><th>Method</th><th>Recall@1</th><th>Recall@5</th><th>Recall@10</th><th>MRR</th></tr></thead><tbody>` +
+    [["bm25_router", "BM25 router (used)"], ["tfidf_cosine", "TF-IDF cosine"], ["tool_name_only", "Tool name only"]].map(([k, l]) =>
+      `<tr${k === "bm25_router" ? ' style="font-weight:600"' : ""}><td>${l}</td>${["recall@1", "recall@5", "recall@10", "mrr"].map((m) => `<td>${ov[k][m].toFixed(3)}</td>`).join("")}</tr>`).join("") + `</tbody>`;
+  const P = D.poisoning;
+  $("poisonTable").innerHTML = `<thead><tr><th>Attack category</th><th>Detected</th></tr></thead><tbody>` +
+    Object.entries(P.by_category).map(([k, v]) => `<tr><td>${esc(k.replace(/_/g, " "))}</td><td>${esc(v)}</td></tr>`).join("") + `</tbody>`;
+  $("poisonNote").textContent = `${P["high+medium"].detected} of ${P.positives} attack descriptions detected at medium or high severity, with ${P["high+medium"].false_positives} false positives among ${fmt(P.negatives)} real operation descriptions (${(P["high+medium"].false_positive_rate * 100).toFixed(2)}%).`;
+
+  select(0);
+})();
+</script>
+</body>
+</html>

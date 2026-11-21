@@ -1,5 +1,7 @@
 # MCPForge: ML-assisted MCP server generator
 
+**Live demo:** https://mehratanveer6.github.io/mcpservergenerator/ (real generator output on the Pet Clinic example and the GitHub, Stripe and Slack APIs, with downloadable generated servers)
+
 MCPForge turns an OpenAPI 3.x or Swagger 2.0 specification into a ready-to-run
 [Model Context Protocol](https://modelcontextprotocol.io) server. Unlike a plain
 one-endpoint-one-tool converter, it treats the spec as data and runs it through a
